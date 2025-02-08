@@ -13,7 +13,7 @@ import MyProfilePage from "./Components/MyProfilePage.jsx";
 import FarmerStockForm from "./Pages/FarmerStockForm.jsx";
 import RetailerDemandForm from "./Pages/RetailerRequirement.jsx";
 import FarmerBestDealsPage from "./Pages/FarmerBestDealsPage.jsx";
-import TransportReq from "./Pages/transportReq.jsx";
+import TransportReq from "./Pages/TransportReq.jsx";
 import Dummy from "./Pages/Dummy.jsx";
 import MyStock from "./Pages/myStock.jsx";
 import ConfRequest from "./Pages/confReq.jsx";
