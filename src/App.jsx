@@ -30,7 +30,7 @@ import Footer from "./Components/Footer.jsx";
 import RetailerDashboard from "./Pages/Reatailerdashboard.jsx";
 import TransporterHome from "./Components/TransporterHome.jsx";
 // import ConsumerHome from "./Components/ConsumerHome.jsx";
-import ConsumerForm from "./Pages/ConsumerForm.jsx";
+import ConsumerForm from "./Pages/ConForm.jsx";
 // import FarmerHome from "./Components/FarmerHome.jsx";
 import ConsumerDashboard from "./Pages/Consumerdashboard.jsx";
 import  Loader  from "./assets/animation/Loader.jsx"
@@ -41,6 +41,7 @@ export default function App() {
   // console.log(intstate.profile); // Debugging: Ensure this is printing the correct Redux state
   // const profilestate = useSelector((state) => state.profile);
   // const userdata=profilestate?.profiledata;
+  //   console.log(userdata);
   //   console.log(userdata);
 
   return (
