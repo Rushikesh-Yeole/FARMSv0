@@ -8,16 +8,23 @@ import { fetchStockListings } from "../store/FarmerDashBoard/stocklistingSlice";
 export default function FarmerInsight() {
   const dispatch = useDispatch();
   const [selectedProduct, setSelectedProduct] = useState("");
+  const [selectedProductopti, setSelectedProductopti] = useState("");
   const [marketInsights, setMarketInsights] = useState(null);
+  const [marketInsightsopti, setMarketInsightsopti] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [region, setRegion] = useState(null);
   const [crops, setCrops] = useState([]);
 
   const cropImages = {
-    onion: "https://example.com/onion.jpg",
-    potato: "https://example.com/potato.jpg",
-    tomato: "https://example.com/tomato.jpg",
+    onion: "images/onion.jpeg",
+    potato: "images/potato.jpeg",
+    tomato: "images/tomato.jpeg",
+    rice: "images/rice.jpg",
+    sugercane: "images/sugercane.jpg",
+    custerd: "images/custered",
+    papaya: "images/papaya",
+    jowar: "images/jowar.png"
   };
 
   useEffect(() => {
@@ -28,11 +35,12 @@ export default function FarmerInsight() {
         if (response && response.stocks) {
           const cropList = response.stocks.map(stock => stock.crop);
           setCrops(cropList);
-          setRegion(response.stocks[0]?.village || "Unknown");
+          setRegion("beed");
 
           const maxCrop = response.stocks.reduce((max, stock) =>
             stock.quantity > max.quantity ? stock : max, response.stocks[0]);
           setSelectedProduct(maxCrop?.crop || "");
+          setSelectedProductopti(maxCrop?.crop || ""); // Set selectedProductopti as well if it's based on the same crop
         }
       } catch (error) {
         console.error("Error fetching stocks:", error);
@@ -42,31 +50,57 @@ export default function FarmerInsight() {
     fetchStocks();
   }, [dispatch]);
 
-  useEffect(() => {
-    if (!region || !selectedProduct) return;
+  // useEffect(() => {
+  //   const fetchMarketInsights = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const response = await axios.post("https://farms-engine.onrender.com/insights", {
+  //         region: "beed",
+  //         product: selectedProduct.toLocaleLowerCase(),
+  //       }, {
+  //         headers: { "Content-Type": "application/json" },
+  //         withCredentials: true,
+  //       });
+  //       setMarketInsights(response.data);
+  //       setError(null);
+  //     } catch (err) {
+  //       setError("Failed to fetch market insights.");
+  //     }
+  //     setLoading(false);
+  //   };
+  //   fetchMarketInsights();
+  // }, [selectedProduct]);
 
-    const fetchMarketInsights = async () => {
+  useEffect(() => {
+    const fetchMarketForecastInsights = async () => {
       setLoading(true);
       try {
-        const response = await axios.post("https://farms-engine.onrender.com/insights", {
-          region:"nashik",
-          product: "rice",
+        const response = await axios.post("https://farms-engine.onrender.com/optisights", { 
+          region: "beed",
+          product: selectedProductopti.toLocaleLowerCase,
+          period: 1,
         }, {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });
-        setMarketInsights(response.data);
+        setMarketInsightsopti(response.data);
         setError(null);
       } catch (err) {
-        setError("Failed to fetch market insights.");
+        setError("Failed to fetch market forecast insights.");
       }
       setLoading(false);
     };
-    fetchMarketInsights();
-  }, [region, selectedProduct]);
+    if (selectedProductopti) {
+      fetchMarketForecastInsights();
+    }
+  }, [selectedProductopti]); // Fetch forecast insights when selectedProductopti changes
 
   const handleProductChange = (e) => {
     setSelectedProduct(e.target.value);
+  };
+
+  const handleProductChangeopti = (e) => {
+    setSelectedProductopti(e.target.value);
   };
 
   return (
@@ -136,9 +170,9 @@ export default function FarmerInsight() {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="p-8 flex items-center justify-center bg-gray-50">
               <div className="w-full h-full max-h-[500px] relative rounded-2xl overflow-hidden p-4">
-                {selectedProduct && cropImages[selectedProduct.toLowerCase()] ? (
+                {selectedProductopti && cropImages[selectedProductopti.toLowerCase()] ? (
                   <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
-                    src={cropImages[selectedProduct.toLowerCase()]} alt={selectedProduct}
+                    src={cropImages[selectedProductopti.toLowerCase()]} alt={selectedProductopti}
                     className="w-full h-full object-cover rounded-2xl shadow-lg" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-2xl">
@@ -150,7 +184,7 @@ export default function FarmerInsight() {
             <div className="p-8">
               <div className="mb-8">
                 <label className="block text-lg font-medium text-gray-700 mb-3">Select Your Crop</label>
-                <select value={selectedProduct} onChange={handleProductChange}
+                <select value={selectedProductopti} onChange={handleProductChangeopti}
                   className="w-full p-4 border border-gray-300 rounded-lg text-lg">
                   {crops.map((crop, index) => (
                     <option key={index} value={crop}>{crop}</option>
@@ -158,17 +192,17 @@ export default function FarmerInsight() {
                 </select>
               </div>
               {loading ? (
-                <p className="text-center text-blue-600 font-semibold">Loading market insights...</p>
+                <p className="text-center text-blue-600 font-semibold">Loading market forecast insights...</p>
               ) : error ? (
                 <div className="p-4 bg-red-100 text-red-700 rounded-lg text-center">{error}</div>
-              ) : selectedProduct && marketInsights && (
+              ) : selectedProductopti && marketInsightsopti && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                  <div className={`p-6 rounded-lg ${marketInsights.percent_gap > 10 ? "bg-green-100 border-l-4 border-green-500" : "bg-red-100 border-l-4 border-red-500"}`}>
+                  <div className={`p-6 rounded-lg ${marketInsightsopti.percent_gap > 10 ? "bg-green-100 border-l-4 border-green-500" : "bg-red-100 border-l-4 border-red-500"}`}>
                     <div className="flex items-start gap-4">
-                      {marketInsights.percent_gap > 10 ? <TrendingUp className="w-6 h-6 text-green-600" /> : <AlertCircle className="w-6 h-6 text-red-600" />}
+                      {marketInsightsopti.percent_gap > 10 ? <TrendingUp className="w-6 h-6 text-green-600" /> : <AlertCircle className="w-6 h-6 text-red-600" />}
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">Market Analysis</h3>
-                        <p className="text-lg">{marketInsights.message}</p>
+                        <h3 className="font-semibold text-lg mb-2">Market Forecast</h3>
+                        <p className="text-lg">{marketInsightsopti.message}</p>
                       </div>
                     </div>
                   </div>

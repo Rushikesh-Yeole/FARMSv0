@@ -19,7 +19,7 @@ export const bestDeal = createAsyncThunk(
     try {
       console.log("Fetching best deals...");
       const response = await axios.get(
-        `http://localhost:8000/farmer/viewbestdeals?farmerStockId=${requirementId}`,
+        `https://farms-kfu1.onrender.com/farmer/viewbestdeals?farmerStockId=${requirementId}`,
         { 
           withCredentials: true,
         }
@@ -43,7 +43,7 @@ export const requestsupply = createAsyncThunk(
   async ({ groupId, farmerStockId, maxDistance }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/farmer/requestsupply`, 
+        `https://farms-kfu1.onrender.com/farmer/requestsupply`, 
         { groupId, farmerStockId, maxDistance }, // Send all data in the request body
         {
           headers: { "Content-Type": "application/json" },

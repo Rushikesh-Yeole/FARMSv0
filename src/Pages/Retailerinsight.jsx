@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Sprout, TrendingUp, AlertCircle, List, CheckCircle } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { fetchStockListings } from "../store/FarmerDashBoard/stocklistingSlice";
+import { viewMyOrdersThunk } from "../store/retailerSlice";
 
 export default function Retailerinsight() {
   const dispatch = useDispatch();
@@ -18,23 +19,32 @@ export default function Retailerinsight() {
   const [narrowError, setNarrowError] = useState(null);
 
   const cropImages = {
-    onion: "https://example.com/onion.jpg",
-    potato: "https://example.com/potato.jpg",
-    tomato: "https://example.com/tomato.jpg",
+    onion: "images/onion.jpeg",
+    potato: "images/potato.jpeg",
+    tomato: "images/tomato.jpeg",
+    rice: "images/rice.jpg",
+    sugercane : "images/sugercane.jpg",
+    custerd: "images/custered",
+    papaya:"images/papaya",
+    jowar:"images/jowar.png"
   };
 
   useEffect(() => {
     const fetchStocks = async () => {
       try {
-        const result = await dispatch(fetchStockListings());
+        const result = await dispatch(viewMyOrdersThunk());
         const response = result.payload;
-        if (response && response.stocks) {
-          const cropList = response.stocks.map(stock => stock.crop);
+      
+        if (response && response.myOrders) {
+          const cropList = response.myOrders.map(stock => stock.crop);
           setCrops(cropList);
-          setRegion(response.stocks[0]?.village || "Unknown");
-
-          const maxCrop = response.stocks.reduce((max, stock) =>
-            stock.quantity > max.quantity ? stock : max, response.stocks[0]);
+  
+          // Assuming 'location.address' is more appropriate than 'village'
+          setRegion(response.myOrders[0]?.location?.address || "beed");
+  
+          // Finding the crop with the maximum quantity
+          const maxCrop = response.myOrders.reduce((max, stock) =>
+            stock.quantity > max.quantity ? stock : max, response.myOrders[0]);
           setSelectedProduct(maxCrop?.crop || "");
         }
       } catch (error) {
@@ -42,22 +52,25 @@ export default function Retailerinsight() {
         setCrops([]);
       }
     };
+  
     fetchStocks();
   }, [dispatch]);
-
+  
   useEffect(() => {
-    if (!region || !selectedProduct) return;
-
+    // if (!region || !selectedProduct) return;
+    
     const fetchMarketInsights = async () => {
       setLoading(true);
       try {
+          console.log(selectedProduct)
         const response = await axios.post("https://farms-engine.onrender.com/insights", {
-          region:"nashik",
-          product: "rice",
+          region: "beed",
+          product:selectedProduct
         }, {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });
+        console.log(response.data)
         setMarketInsights(response.data);
         setError(null);
       } catch (err) {
@@ -66,7 +79,7 @@ export default function Retailerinsight() {
       setLoading(false);
     };
     fetchMarketInsights();
-  }, [region, selectedProduct]);
+  }, [selectedProduct]);
 
   useEffect(() => {
     const fetchNarrowInsights = async () => {
@@ -74,14 +87,28 @@ export default function Retailerinsight() {
       try {
         const response = await axios.get('https://farms-engine.onrender.com/narrowInsights/6799016d06a2f18aaae17152');
         setNarrowInsights(response.data);
+        console.log(response.data);
         setNarrowError(null);
       } catch (err) {
         setNarrowError('Failed to fetch narrow insights');
       }
       setNarrowLoading(false);
     };
+  
+    // Initial fetch
     fetchNarrowInsights();
-  }, []);
+  
+    // Set interval to fetch narrow insights every 2 seconds
+    const intervalId = setInterval(() => {
+      fetchNarrowInsights();
+    }, 10000); // 2000ms = 2 seconds
+  
+    // Clean up the interval on component unmount
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);  // Empty dependency array ensures this useEffect runs once on mount
+  
 
   const handleProductChange = (e) => {
     setSelectedProduct(e.target.value);
@@ -95,16 +122,17 @@ export default function Retailerinsight() {
             <Sprout className="w-8 h-8 text-green-600" />
             <h1 className="text-4xl font-bold text-green-800">Market Insights</h1>
           </div>
-          
         </motion.div>
+
+        {/* Retailer Real-Time Insights */}
         <div className="bg-white rounded-xl shadow-xl overflow-hidden">
-          {/* Add heading for first card */}
           <div className="bg-green-600 p-4">
             <h2 className="text-2xl font-bold text-white text-center">
               Retailer Real-Time Insights
             </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
+            {/* Crop Image Section */}
             <div className="p-8 flex items-center justify-center bg-gray-50">
               <div className="w-full h-full max-h-[500px] relative rounded-2xl overflow-hidden p-4">
                 {selectedProduct && cropImages[selectedProduct.toLowerCase()] ? (
@@ -118,16 +146,19 @@ export default function Retailerinsight() {
                 )}
               </div>
             </div>
+
+            {/* Crop Selection and Insights Section */}
             <div className="p-8">
               <div className="mb-8">
                 <label className="block text-lg font-medium text-gray-700 mb-3">Select Crop to order</label>
-                <select value={selectedProduct} onChange={handleProductChange}
+                <select  onChange={handleProductChange} value={selectedProduct.toLowerCase()}
                   className="w-full p-4 border border-gray-300 rounded-lg text-lg">
                   {crops.map((crop, index) => (
-                    <option key={index} value={crop}>{crop}</option>
+                    <option key={index} value={crop.toLowerCase()}>{crop.toLowerCase()}</option>
                   ))}
                 </select>
               </div>
+
               {loading ? (
                 <p className="text-center text-blue-600 font-semibold">Loading market insights...</p>
               ) : error ? (
@@ -148,12 +179,12 @@ export default function Retailerinsight() {
             </div>
           </div>
         </div>
-         
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden mt-10">
-          {/* Add heading for second card */}
-          <div className="bg-green-600 p-4">
+
+        {/* Retailer Insights with Forecasting */}
+        {/* <div className="bg-white rounded-xl shadow-xl overflow-hidden mt-10"> */}
+          {/* <div className="bg-green-600 p-4">
             <h2 className="text-2xl font-bold text-white text-center">
-              Reatailer insight with faorcasting 
+              Retailer Insight with Forecasting
             </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
@@ -199,62 +230,77 @@ export default function Retailerinsight() {
               )}
             </div>
           </div>
+        </div> */}
+
+        {/* Shopkeeper Narrow Insight */}
+ {/* Shopkeeper Narrow Insight */}
+<div className="bg-white rounded-xl shadow-xl overflow-hidden mt-10">
+  <div className="bg-green-600 p-4">
+    <h2 className="text-2xl font-bold text-white text-center">
+      Shopkeeper Narrow Insight
+    </h2>
+  </div>
+  <div className="p-8">
+    {narrowLoading ? (
+      <p className="text-center text-blue-600 font-semibold">Loading narrow insights...</p>
+    ) : narrowError ? (
+      <div className="p-4 bg-red-100 text-red-700 rounded-lg text-center">{narrowError}</div>
+    ) : narrowInsights && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="space-y-6"
+      >
+        {/* Instructions Section */}
+        <div className="bg-green-50 rounded-lg p-6">
+          <div className="flex items-start gap-3 mb-4">
+            <List className="w-6 h-6 text-green-600 mt-1" />
+            <h3 className="text-xl font-semibold text-green-800">
+              Market Instructions
+            </h3>
+          </div>
+          
         </div>
 
-        
-
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden mt-10">
-          <div className="bg-green-600 p-4">
-            <h2 className="text-2xl font-bold text-white text-center">
-              Shopkeeper Narrow Insight
-            </h2>
+        {/* Additional Information Section */}
+        {narrowInsights.additionalInfo && (
+          <div className="bg-blue-50 rounded-lg p-6">
+            <h4 className="text-lg font-semibold text-blue-800 mb-3">
+              Additional Information
+            </h4>
+            <p className="text-gray-700">{narrowInsights.additionalInfo}</p>
           </div>
-          <div className="p-8">
-            {narrowLoading ? (
-              <p className="text-center text-blue-600 font-semibold">Loading narrow insights...</p>
-            ) : narrowError ? (
-              <div className="p-4 bg-red-100 text-red-700 rounded-lg text-center">{narrowError}</div>
-            ) : narrowInsights && (
-              <motion.div 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                className="space-y-6"
+        )}
+
+        {/* Insights/Warn Messages Section */}
+        {narrowInsights.insights?.length > 0 ? (
+          <div className="bg-yellow-50 rounded-lg p-6 mt-6">
+            <h4 className="text-lg font-semibold text-yellow-800 mb-3">
+              Crop Spoilage Insights
+            </h4>
+            {narrowInsights.insights.map((insight, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0  }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-red-100 text-red-700 flex p-4 rounded-lg mb-4"
               >
-                <div className="bg-green-50 rounded-lg p-6">
-                  <div className="flex items-start gap-3 mb-4">
-                    <List className="w-6 h-6 text-green-600 mt-1" />
-                    <h3 className="text-xl font-semibold text-green-800">
-                      Market Instructions
-                    </h3>
-                  </div>
-                  <div className="space-y-4">
-                    {narrowInsights.instructions?.map((instruction, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-start gap-3"
-                      >
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-1" />
-                        <p className="text-gray-700">{instruction}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                {narrowInsights.additionalInfo && (
-                  <div className="bg-blue-50 rounded-lg p-6">
-                    <h4 className="text-lg font-semibold text-blue-800 mb-3">
-                      Additional Information
-                    </h4>
-                    <p className="text-gray-700">{narrowInsights.additionalInfo}</p>
-                  </div>
-                )}
+                {/* <div> <img src={insight[0]} alt="" /></div> */}
+                <p className="text-md font-semibold">{insight[0]}</p>
+                <p>{insight[1]}</p>
               </motion.div>
-            )}
+            ))}
           </div>
-        </div>
+        ) : (
+          <p className="text-gray-500">No spoilage insights available.</p>
+        )}
+      </motion.div>
+    )}
+  </div>
+</div>
+
+
       </div>
     </main>
   );

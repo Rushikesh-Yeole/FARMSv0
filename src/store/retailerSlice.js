@@ -16,7 +16,7 @@ export const viewMyOrdersThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/retailer/viewmyorders",
+        "https://farms-kfu1.onrender.com/retailer/viewmyorders",
         { withCredentials: true } // Ensure backend supports CORS credentials
       );
       console.log("Response received:", response.data);
@@ -34,7 +34,7 @@ export const viewSupplierThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/retailer/viewsupplier",
+        "https://farms-kfu1.onrender.com/retailer/viewsupplier",
         { withCredentials: true }
       );
       console.log("Response received:", response.data);
@@ -52,7 +52,7 @@ export const retailerNotificationThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/retailer/notifications",
+        "https://farms-kfu1.onrender.com/retailer/notifications",
         { withCredentials: true }
       );
       console.log("Notification Response:", response.data);

@@ -5,7 +5,7 @@ export const fetchStockListings = createAsyncThunk(
   "stockListings/fetch",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:8000/farmer/mystock",{
+      const response = await axios.get("https://farms-kfu1.onrender.com/farmer/mystock",{
         withCredentials:true
       });
       return response.data;
