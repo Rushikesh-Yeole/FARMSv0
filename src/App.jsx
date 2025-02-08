@@ -35,6 +35,7 @@ import ConsumerForm from "./Pages/ConForm.jsx";
 import ConsumerDashboard from "./Pages/Consumerdashboard.jsx";
 import  Loader  from "./assets/animation/Loader.jsx"
 import ConsumerBestDeals from "./Pages/ConsumerBestDeals.jsx";
+import Retailerinsight from "./Pages/Retailerinsight.jsx";
 
 export default function App() {
   // const intstate = useSelector((state) => state.profile);
@@ -69,6 +70,8 @@ export default function App() {
             {/* Retailer Routing */}
             <Route path="/retailerpost" element={<RetailerDemandForm />} />
             <Route path="/retailerDashboard" element={<RetailerDashboard />} />
+            <Route path="/retailerinsight" element={<Retailerinsight />} />
+            
 
             {/* Transport Routing */}
            
