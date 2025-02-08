@@ -40,7 +40,16 @@ export const farmerStockPost = createAsyncThunk(
 const postStockSlice = createSlice({
   name: "stockPost",
   initialState,
-  reducers: {},
+  reducers: {
+    replaceStockPostData: (state, action) => {
+      console.log("hii")
+      state.stockPostData = action.payload;
+      state.loading = false;
+      console.log(action.payload ) // Replaces the entire object
+      localStorage.setItem("PostStock", JSON.stringify(action.payload));
+       // Update localStorage
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(farmerStockPost.pending, (state) => {
@@ -64,5 +73,5 @@ const postStockSlice = createSlice({
       });
   },
 });
-
+export const { replaceStockPostData } = postStockSlice.actions;
 export default postStockSlice.reducer;

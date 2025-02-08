@@ -196,7 +196,78 @@ const FarmerHome = () => {
               </button>
             </motion.div>
           ))}
+          
         </motion.div>
+         <motion.div
+                      key={"Dashboard"}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="relative group px-48"
+                    >
+                      <button
+                        onClick={() => navigate("/transporterDemand")}
+                        className="w-full text-left focus:outline-none"
+                      >
+                        <div className={`
+                          p-4 rounded-xl shadow-md
+                          bg-gradient-to-r from-emerald-700 to-green-800
+                          transform transition-all duration-300
+                          group-hover:shadow-lg
+                          relative overflow-hidden
+                        `}>
+                          {/* Animated Background Pattern */}
+                          <motion.div 
+                            className="absolute inset-0  opacity-10"
+                            animate={{
+                              backgroundPosition: ['0% 0%', '100% 100%'],
+                            }}
+                            transition={{
+                              duration: 20,
+                              repeat: Infinity,
+                              repeatType: "reverse"
+                            }}
+                            style={{
+                              backgroundImage: 'radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)',
+                              backgroundSize: '20px 20px'
+                            }}
+                          />
+        
+                          <div className="relative z-10">
+                            <div className="flex items-center mb-2">
+                              <motion.div
+                                whileHover={{ rotate: 360 }}
+                                transition={{ duration: 0.5 }}
+                              >
+                                <LayoutDashboard className="w-6 h-6 text-white" />
+                              </motion.div>
+                              <h3 className="text-lg font-bold text-white ml-2">
+                                Transport Demand
+                              </h3>
+                            </div>
+                            <p className="text-green-50 text-sm mb-2">
+                            Access Transport here 
+                            </p>
+                            <motion.div 
+                              className="flex items-center text-white text-sm font-medium"
+                              whileHover={{ x: 5 }}
+                              transition={{ type: "spring", stiffness: 300 }}
+                            >
+                              <span>Get Started</span>
+                              <ArrowRight className="ml-1 w-4 h-4" />
+                            </motion.div>
+                          </div>
+        
+                          {/* Interactive Hover Effect */}
+                          <motion.div
+                            className="absolute inset-0 bg-white opacity-0"
+                            whileHover={{ opacity: 0.1 }}
+                            transition={{ duration: 0.2 }}
+                          />
+                        </div>
+                      </button>
+                    </motion.div>
+        
       </div>
     </div>
   );

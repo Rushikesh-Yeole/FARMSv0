@@ -104,7 +104,7 @@ const ConsumerHome = () => {
           </motion.div>
           
           <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-2">
-            Welcome back, Transporter!
+            Welcome back, Consumer!
           </h1>
           <motion.p 
             className="text-lg text-gray-600 max-w-2xl mx-auto"

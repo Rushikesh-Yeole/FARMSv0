@@ -118,7 +118,7 @@ export default function RetailerDemandForm() {
 
         {/* Quantity */}
         <div>
-          <label className="block font-medium mb-1">Quantity (quintal)</label>
+          <label className="block font-medium mb-1">Quantity (kg)</label>
           <input
             type="number"
             name="quantity"
@@ -133,7 +133,7 @@ export default function RetailerDemandForm() {
 
         {/* Price */}
         <div>
-          <label className="block font-medium mb-1">Expected Price (₹ per quintal)</label>
+          <label className="block font-medium mb-1">Offered Price (₹ per kg)</label>
           <input
             type="number"
             name="price"
@@ -160,7 +160,8 @@ export default function RetailerDemandForm() {
             <option value="1">1 (Premium)</option>
             <option value="2">2 (Good)</option>
             <option value="3">3 (Average)</option>
-            <option value="4">4 (Low)</option>
+            <option value="4">4 (Moderate)</option>
+            <option value="5">5 (Low)</option>
           </select>
         </div>
 

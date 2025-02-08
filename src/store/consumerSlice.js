@@ -62,11 +62,11 @@ export const requestsupplyconsumer = createAsyncThunk(
 // Async thunk to fetch the best deals
 export const consumerbestDeal = createAsyncThunk(
   "deals/consumerbestDeals",
-  async (requirementId, { rejectWithValue }) => {
+  async (farmerStockId, { rejectWithValue }) => {
     try {
       console.log("Fetching best deals...");
       const response = await axios.get(
-        `http://localhost:8000/farmer/consumerdeals/viewbestdeals?requirementId=${requirementId}`,
+        `http://localhost:8000/farmer/consumerdeals/viewbestdeals?farmerStockId=${farmerStockId}`,
         { withCredentials: true }
       );
       console.log("Best deals response:", response.data);

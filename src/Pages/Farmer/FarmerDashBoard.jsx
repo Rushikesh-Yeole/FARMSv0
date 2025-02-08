@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { fetchStockListings } from "../../store/FarmerDashBoard/stocklistingSlice";
 import { useDispatch } from "react-redux";
 import { myTransportDemand } from "../../store/transportDemandSlice";
-import { updateDealData } from "../../store/viewBestDealsSlice";
+import { replaceStockPostData } from "../../store/farmerStockPostSlice";
 import { useNavigate } from "react-router-dom";
 import {
   Package,
@@ -139,7 +139,7 @@ const FarmerDashboard = () => {
       }
     } catch (error) {
       console.error("Error fetching notifications:", error);
-      setPendingrequest([]); // Prevents crashes if API call fails
+      setPendingrequest([]); // Prevents crashes if API call fails  
     }
   };
   
@@ -154,6 +154,7 @@ const FarmerDashboard = () => {
       console.log("API Response:", result); // Debugging log
   
       if (result.payload) {
+        console.log(result.payload)
         settransportDemands(result.payload);
       } else {
         console.warn("Warning: No data received in payload.");
@@ -164,25 +165,26 @@ const FarmerDashboard = () => {
       settransportDemands([]); // Prevent crashes in UI
     }
   };
-  const handleshopkeeperBestdeals = async (payload) => {
+  const handleshopkeeperBestdeals =  (payload) => {
     try {
       console.log("Dispatching payload:", payload);
-      await dispatch(updateDealData(payload));
+       dispatch(replaceStockPostData(payload));
       navigate('/farmerbestdeals');
     } catch (error) {
       console.error("Error updating deal data:", error);
     }
   };
-  const handleconsumerBestdeals =(stock) =>{
+  const handleconsumerBestdeals = (stock) => {
+    dispatch(replaceStockPostData(stock));  
     navigate('/consumerbestdeals');
-  }
+  };
   
   
 
 
   useEffect(() => {
     if (activeTab === "stocks") {
-      handlestockListing(); // Fetch stocks when 'stocks' tab is active
+      handlestockListing(); 
     }
   }, [activeTab]);
 

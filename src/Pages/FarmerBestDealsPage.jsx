@@ -19,8 +19,9 @@ import { HiIdentification } from "react-icons/hi";
 
 const FarmerBestDealsPage = () => {
   const [expandedDeals, setExpandedDeals] = useState({});
-  const postStock = useSelector((state) => state.postStock);
+  
   const dispatch = useDispatch();
+  const postStock = useSelector((state) => state.postStock);
   const [deals, setDeals] = useState([ /* Your deals data here */ ]);
   const [loading,setloading]=useState(true);
   const toggleDealExpansion = (dealId) => {
@@ -29,25 +30,33 @@ const FarmerBestDealsPage = () => {
       [dealId]: !prev[dealId],
     }));
   };
-  const farmerStockId = useSelector((state) => state.postStock?.stockPostData?.stock?._id);
+  let farmerStockId = useSelector((state) => state.postStock?.stockPostData?.stock?._id);
 // const farmerStockId = useSelector((state)=>state.postStock)
 
   const formatDate = (date) => new Date(date).toLocaleDateString();
   const formatCurrency = (value) => `₹${value.toLocaleString()}`;
 
   useEffect(() => {
-    const requirementId = postStock?.stockPostData?.stock?._id;
-    if (!requirementId) return; // Prevent unnecessary calls
+     
+    if(!farmerStockId){
+      farmerStockId = postStock?.stockPostData?._id;
+    }
+    
+    if (!farmerStockId) {
+      setloading(false)
+      return}
+    ;
+    
   
   
-    dispatch(bestDeal(requirementId))
+    dispatch(bestDeal(farmerStockId))
       .then((result) => {
         if (result.payload?.filteredDeals?.length) {
-          setDeals(result.payload.filteredDeals); // Only set if not empty
+          setDeals(result.payload.filteredDeals); 
         }
       })
-      .finally(() => setloading(false)); // Ensure loading stops
-  }, [dispatch, postStock?.stockPostData?.stock?._id]);
+      .finally(() => setloading(false)); 
+  }, [dispatch, farmerStockId]);
 
   const handleSupplyRequest = (groupId, farmerStockId, maxDistance) => {
     if (!farmerStockId) {

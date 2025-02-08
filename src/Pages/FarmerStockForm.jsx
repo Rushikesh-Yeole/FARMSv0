@@ -198,12 +198,12 @@ export default function FarmerStockForm() {
             onChange={handleChange}
             required
           >
-            <option value="">-- Select Grade --</option>
-            {[1, 2, 3, 4, 5].map((grade) => (
-              <option key={grade} value={grade}>
-                {grade}
-              </option>
-            ))}
+          <option value="">-- Select Grade --</option>
+            <option value="1">1 (Premium)</option>
+            <option value="2">2 (Good)</option>
+            <option value="3">3 (Average)</option>
+            <option value="4">4 (Moderate)</option>
+            <option value="5">5 (Low)</option>
           </select>
         </div>
 

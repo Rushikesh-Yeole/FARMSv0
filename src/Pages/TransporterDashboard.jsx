@@ -114,7 +114,8 @@ export default function TransporterDashboard() {
                     <p>Price: {request.price}</p>
                     <p>From: {request.Departlocation?.place}</p>
                     <p>To: {request.Destination?.place}</p>
-                    <p>Date: {new Date(request.DepartureDate).toLocaleDateString()}</p>
+                    <p>Date: {new Date(request.DepatrureDate
+).toLocaleDateString()}</p>
                   </div>
                 </div>
               ))
@@ -148,7 +149,8 @@ export default function TransporterDashboard() {
                     <p>Price: {request.price}</p>
                     <p>From: {request.Departlocation?.place}</p>
                     <p>To: {request.Destination?.place}</p>
-                    <p>Date: {new Date(request.DepartureDate).toLocaleDateString()}</p>
+                    <p>Date: {new Date(request.DepatrureDate
+).toLocaleDateString()}</p>
                   </div>
                 </div>
               ))

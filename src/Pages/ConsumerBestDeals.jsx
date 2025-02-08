@@ -22,7 +22,8 @@ const ConsumerBestDeals = () => {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const farmerStockId = postStock?.stockPostData?.stock?._id;
+  let farmerStockId = postStock?.stockPostData?.stock?._id;
+  if(!farmerStockId) farmerStockId =postStock?.stockPostData?._id;
   console.log(postStock)
 
   const toggleDealExpansion = (dealId) => {
@@ -38,9 +39,10 @@ const ConsumerBestDeals = () => {
   useEffect(() => {
     if (farmerStockId) {
       setLoading(true); // Set loading true before fetching data
-  
+      console.log("working")
       dispatch(consumerbestDeal(farmerStockId))
         .then((result) => {
+          console.log(result.payload)
           if (result.payload?.filteredDeals?.length > 0) {
             setDeals(result.payload?.filteredDeals); // Update only if deals are found
           }
@@ -49,6 +51,7 @@ const ConsumerBestDeals = () => {
           setLoading(false); // Ensure loading is set to false after API call
         });
     }
+    setLoading(false)
   }, [dispatch,farmerStockId]);
   
 

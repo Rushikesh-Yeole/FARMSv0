@@ -180,7 +180,7 @@ export default function TransportDemandForm() {
 
         {/* Quantity */}
         <div>
-          <label className="block font-medium mb-1">Quantity (quintal)</label>
+          <label className="block font-medium mb-1">Quantity (Kg)</label>
           <input
             type="number"
             name="quantity"

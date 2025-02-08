@@ -20,7 +20,7 @@ export const bestDeal = createAsyncThunk(
       console.log("Fetching best deals...");
       const response = await axios.get(
         `http://localhost:8000/farmer/viewbestdeals?farmerStockId=${requirementId}`,
-        {
+        { 
           withCredentials: true,
         }
       );

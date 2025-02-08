@@ -113,7 +113,7 @@ const RegisterProfile = () => {
           >
             <option value="">Select Account Type</option>
             <option value="Farmer">Farmer</option>
-            <option value="Retailer">Retailer</option>
+            <option value="Retailer">ShopKeeper</option>
             <option value="Transporter">Transporter</option>
             <option value="Consumer">Consumer</option>
           </select>
