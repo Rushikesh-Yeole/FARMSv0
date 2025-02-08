@@ -6,7 +6,7 @@ export const retailerdemandthunk = createAsyncThunk(
   async (retailerdemanddata, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://farms-9cei.onrender.com/retailer/postrequirement",
+        "http://localhost:8000/retailer/postrequirement",
         retailerdemanddata,
         { withCredentials: true }
       );

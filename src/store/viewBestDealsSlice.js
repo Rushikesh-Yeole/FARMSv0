@@ -43,7 +43,7 @@ export const requestsupply = createAsyncThunk(
   async ({ groupId, farmerStockId, maxDistance }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `https://farms-9cei.onrender.com/farmer/requestsupply`, 
+        `http://localhost:8000/farmer/requestsupply`, 
         { groupId, farmerStockId, maxDistance }, // Send all data in the request body
         {
           headers: { "Content-Type": "application/json" },
