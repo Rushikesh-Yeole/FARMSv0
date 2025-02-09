@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// ✅ Load userData from localStorage
 const storedUserData = JSON.parse(localStorage.getItem("userData")) || null; 
 const storedIsLogin = !!storedUserData; 
 
-// ✅ Async action for login
+
 export const login = createAsyncThunk(
   "loginuser/login",
   async ({ mobileNumber, password }, { rejectWithValue }) => {
@@ -16,7 +15,7 @@ export const login = createAsyncThunk(
         { withCredentials: true }
       );
 
-      // ✅ Save both token and user data
+      //  Save both token and user data
       localStorage.setItem("token", JSON.stringify(response.data.token));
       localStorage.setItem("userData", JSON.stringify(response.data));
 
@@ -29,14 +28,13 @@ export const login = createAsyncThunk(
   }
 );
 
-// ✅ Async action for logout
+
 export const logoutThunk = createAsyncThunk(
   "loginuser/logout",
   async (_, { rejectWithValue }) => {
     try {
       await axios.post("https://farms-kfu1.onrender.com/api/logout", {}, { withCredentials: true });
 
-      // ✅ Clear user data
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
 
@@ -47,7 +45,7 @@ export const logoutThunk = createAsyncThunk(
   }
 );
 
-// ✅ Create Redux Slice
+
 const loginSlice = createSlice({
   name: "loginuser",
   initialState: {

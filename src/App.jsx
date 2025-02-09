@@ -36,6 +36,8 @@ import ConsumerDashboard from "./Pages/Consumerdashboard.jsx";
 import  Loader  from "./assets/animation/Loader.jsx"
 import ConsumerBestDeals from "./Pages/ConsumerBestDeals.jsx";
 import Retailerinsight from "./Pages/Retailerinsight.jsx";
+import RetailerSbestDeals from "./Pages/RetailerSbestDeals.jsx";
+import { SiRotaryinternational } from "react-icons/si";
 
 export default function App() {
   // const intstate = useSelector((state) => state.profile);
@@ -65,14 +67,15 @@ export default function App() {
               path="/transporterDemand"
               element={<TransportDemandForm />}
             />
+
             
 
             {/* Retailer Routing */}
             <Route path="/retailerpost" element={<RetailerDemandForm />} />
             <Route path="/retailerDashboard" element={<RetailerDashboard />} />
             <Route path="/retailerinsight" element={<Retailerinsight />} />
-            
-
+            <Route path="/retailerBestDeal" element={RetailerSbestDeals}/>
+          
             {/* Transport Routing */}
            
             <Route path="/transport" element={<Transport />} />
