@@ -48,7 +48,7 @@ export default function App() {
   //   console.log(userdata);
 
   return (
-    // <BrowserRouter>
+    <BrowserRouter>
       <div className=" flex flex-col">
         {/* Fixed Header */}
         <Header />
@@ -117,6 +117,6 @@ export default function App() {
         </div>
         <Footer></Footer>
       </div>
-    // </BrowserRouter>
+     </BrowserRouter>
   );
 }
