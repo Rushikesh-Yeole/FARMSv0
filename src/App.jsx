@@ -36,7 +36,7 @@ import ConsumerDashboard from "./Pages/Consumerdashboard.jsx";
 import  Loader  from "./assets/animation/Loader.jsx"
 import ConsumerBestDeals from "./Pages/ConsumerBestDeals.jsx";
 import Retailerinsight from "./Pages/Retailerinsight.jsx";
-import RetailerSbestDeals from "./Pages/RetailerSbestDeals.jsx";
+// import RetailerSbestDeals from "./Pages/RetailerSbestDeals.jsx";
 import { SiRotaryinternational } from "react-icons/si";
 
 export default function App() {

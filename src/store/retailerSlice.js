@@ -1,23 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Define initial state
+
 const initialState = {
   myretailerData: null,
-  viewsupplier: null, // Fixed typo from 'veiwsupplier'
+  viewsupplier: null, 
   notification: null,
+  bestDeals:null,
   loading: false,
   error: null,
 };
 
-// Async thunk for fetching retailer's orders
 export const viewMyOrdersThunk = createAsyncThunk(
   "retailer/viewMyOrdersThunk",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         "https://farms-kfu1.onrender.com/retailer/viewmyorders",
-        { withCredentials: true } // Ensure backend supports CORS credentials
+        { withCredentials: true } 
       );
       console.log("Response received:", response.data);
       return response.data;
@@ -27,8 +27,24 @@ export const viewMyOrdersThunk = createAsyncThunk(
     }
   }
 );
+export const retailerBestdeal = createAsyncThunk(
+  "deals/retailerBestdeal",
+  async (farmerStockId, { rejectWithValue }) => {
+    try {
+      console.log("Fetching best deals...");
+      const response = await axios.get(
+        `https://farms-kfu1.onrender.com/farmer/consumerdeals/viewbestdeals?farmerStockId=${farmerStockId}`,
+        { withCredentials: true }
+      );
+      console.log("Best deals response:", response.data);
+      localStorage.setItem("retailerBestdeal", JSON.stringify(response.data));
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
 
-// Async thunk for fetching supplier data
 export const viewSupplierThunk = createAsyncThunk(
   "retailer/viewSupplier",
   async (_, { rejectWithValue }) => {
@@ -46,7 +62,6 @@ export const viewSupplierThunk = createAsyncThunk(
   }
 );
 
-// Async thunk for fetching retailer notifications
 export const retailerNotificationThunk = createAsyncThunk(
   "retailer/notification",
   async (_, { rejectWithValue }) => {
@@ -64,25 +79,26 @@ export const retailerNotificationThunk = createAsyncThunk(
   }
 );
 
-// Create retailer slice
+
 const retailerSlice = createSlice({
   name: "retailer",
   initialState,
   reducers: {
     resetState: (state) => {
       state.myretailerData = null;
-      state.viewsupplier = null; // Reset supplier data
+      state.viewsupplier = null; 
       state.notification = null;
       state.loading = false;
       state.error = null;
-      sessionStorage.removeItem("myretailerData"); // Clear session storage
-      sessionStorage.removeItem("viewsupplier"); // Clear supplier session storage
-      sessionStorage.removeItem("notification"); // Clear notification session storage
+      sessionStorage.removeItem("myretailerData"); 
+      sessionStorage.removeItem("viewsupplier"); 
+      sessionStorage.removeItem("notification"); 
+      sessionStorage.removeItem("retailerBestdeal"); 
     },
   },
   extraReducers: (builder) => {
     builder
-      // Handle viewMyOrdersThunk
+      
       .addCase(viewMyOrdersThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -92,7 +108,7 @@ const retailerSlice = createSlice({
         state.myretailerData = action.payload;
         console.log("Orders Fetch successful:", action.payload);
 
-        // Store fetched data in sessionStorage
+        
         sessionStorage.setItem("myretailerData", JSON.stringify(action.payload));
       })
       .addCase(viewMyOrdersThunk.rejected, (state, action) => {
@@ -100,7 +116,7 @@ const retailerSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Handle retailerNotificationThunk
+      
       .addCase(retailerNotificationThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -110,7 +126,7 @@ const retailerSlice = createSlice({
         state.notification = action.payload;
         console.log("Notification Fetch successful:", action.payload);
 
-        // Store notifications in sessionStorage
+        
         sessionStorage.setItem("notification", JSON.stringify(action.payload));
       })
       .addCase(retailerNotificationThunk.rejected, (state, action) => {
@@ -118,7 +134,7 @@ const retailerSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Handle viewSupplierThunk
+    
       .addCase(viewSupplierThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -128,10 +144,29 @@ const retailerSlice = createSlice({
         state.viewsupplier = action.payload;
         console.log("Supplier Fetch successful:", action.payload);
 
-        // Store supplier data in sessionStorage
+   
         sessionStorage.setItem("viewsupplier", JSON.stringify(action.payload));
       })
       .addCase(viewSupplierThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
+     
+      .addCase(retailerBestdeal.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(retailerBestdeal.fulfilled, (state, action) => {
+        state.loading = false;
+      
+        console.log("Best deal fetch successful:", action.payload);
+        state.bestDeals = action.payload
+        state.bestDeals = action.payload;
+
+        sessionStorage.setItem("retailerBestdeal", JSON.stringify(action.payload));
+      })
+      .addCase(retailerBestdeal.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
