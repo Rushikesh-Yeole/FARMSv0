@@ -6,7 +6,7 @@ export const transreq = createAsyncThunk(
   "request/getrequest",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("https://farms-kfu1.onrender.com/transporter/getinfo", {
+      const response = await axios.get("http://localhost:8000/transporter/getinfo", {
         withCredentials: true,
       });
 
@@ -25,7 +25,7 @@ export const acceptinvite = createAsyncThunk(
   async (transportrequirementid, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `https://farms-kfu1.onrender.com/transporter/sendrequest?requirementId=${transportrequirementid}`,
+        `http://localhost:8000/transporter/sendrequest?requirementId=${transportrequirementid}`,
         {},
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -48,7 +48,7 @@ export const getPendingRequest =createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `https://farms-kfu1.onrender.com/transporter/getpendingreq`,
+        `http://localhost:8000/transporter/getpendingreq`,
         {
           headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,
@@ -71,7 +71,7 @@ export const getmyRequest =createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `https://farms-kfu1.onrender.com/transporter/accepted`,
+        `http://localhost:8000/transporter/accepted`,
         {
           headers: { "Content-Type": "multipart/form-data" },
           withCredentials: true,

@@ -16,7 +16,7 @@ export const viewMyOrdersThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "https://farms-kfu1.onrender.com/retailer/viewmyorders",
+        "http://localhost:8000/retailer/viewmyorders",
         { withCredentials: true } 
       );
       console.log("Response received:", response.data);
@@ -33,7 +33,7 @@ export const retailerBestdeal = createAsyncThunk(
     try {
       console.log("Fetching best deals...");
       const response = await axios.get(
-        `https://farms-kfu1.onrender.com/farmer/consumerdeals/viewbestdeals?farmerStockId=${farmerStockId}`,
+        `http://localhost:8000/farmer/consumerdeals/viewbestdeals?farmerStockId=${farmerStockId}`,
         { withCredentials: true }
       );
       console.log("Best deals response:", response.data);
@@ -50,7 +50,7 @@ export const viewSupplierThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "https://farms-kfu1.onrender.com/retailer/viewsupplier",
+        "http://localhost:8000/retailer/viewsupplier",
         { withCredentials: true }
       );
       console.log("Response received:", response.data);
@@ -67,7 +67,7 @@ export const retailerNotificationThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "https://farms-kfu1.onrender.com/retailer/notifications",
+        "http://localhost:8000/retailer/notifications",
         { withCredentials: true }
       );
       console.log("Notification Response:", response.data);

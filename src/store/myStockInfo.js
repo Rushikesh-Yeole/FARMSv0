@@ -16,7 +16,7 @@ export const getMyreq = createAsyncThunk(
     try {
       console.log("Fetching my stock...");
       const response = await axios.get(
-        "https://farms-kfu1.onrender.com/farmer/mystock",
+        "http://localhost:8000/farmer/mystock",
         { withCredentials: true } // Correct way to pass config
       );
       console.log(response);
