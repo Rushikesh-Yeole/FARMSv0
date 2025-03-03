@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/farmer/getmypendingrequest";
+const API_URL = "https://farms-9cei.onrender.com/farmer/getmypendingrequest";
 
 // Fetch Notifications
 export const fetchNotifications = createAsyncThunk(
@@ -24,7 +24,7 @@ export const acceptInvitation = createAsyncThunk(
   async (pendingrequestId, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `http://localhost:8000/farmer/accepttransportRequest?transporterRequestId=${pendingrequestId}`,
+        `https://farms-9cei.onrender.com/farmer/accepttransportRequest?transporterRequestId=${pendingrequestId}`,
         {}, // No body required
         { withCredentials: true }
       );

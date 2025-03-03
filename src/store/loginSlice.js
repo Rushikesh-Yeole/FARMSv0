@@ -1,21 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const storedUserData = JSON.parse(localStorage.getItem("userData")) || null; 
-const storedIsLogin = !!storedUserData; 
-
+const storedUserData = JSON.parse(localStorage.getItem("userData")) || null;
+const storedIsLogin = !!storedUserData;
 
 export const login = createAsyncThunk(
   "loginuser/login",
   async ({ mobileNumber, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/login",
+        "https://farms-9cei.onrender.com/api/login",
         { contactNumber: mobileNumber, password },
         { withCredentials: true }
       );
 
-      //  Save both token and user data
+      // Save both token and user data
       localStorage.setItem("token", JSON.stringify(response.data.token));
       localStorage.setItem("userData", JSON.stringify(response.data));
 
@@ -28,23 +27,25 @@ export const login = createAsyncThunk(
   }
 );
 
-
 export const logoutThunk = createAsyncThunk(
   "loginuser/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await axios.post("http://localhost:8000/api/logout", {}, { withCredentials: true });
+      await axios.post(
+        "https://farms-9cei.onrender.com/api/logout",
+        {},
+        { withCredentials: true }
+      );
 
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
 
-      return true; 
+      return true;
     } catch (err) {
       return rejectWithValue(err.response?.data || "Logout failed");
     }
   }
 );
-
 
 const loginSlice = createSlice({
   name: "loginuser",
@@ -54,9 +55,7 @@ const loginSlice = createSlice({
     loading: false,
     error: null,
   },
-
   reducers: {},
-
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
