@@ -35,7 +35,7 @@ export default function TransportReq() {
     );
     setFilteredCards(filtered);
   };
-
+  
   // Accept request handler
   const acceptRequestHandler = (id) => {
     dispatch(acceptinvite(id));

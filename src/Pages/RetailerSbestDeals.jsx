@@ -22,7 +22,7 @@ const RetailerSbestDeals = () => {
       retailerName: "Karan Chavan",
       retailerType: "Premium Wholesaler",
       productImage:
-        "https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=2070",
+        "/images/tomato.jpg",
       productName: "Tomatoes",
       rating: 4.8,
       pricePerKg: 45,
@@ -37,8 +37,8 @@ const RetailerSbestDeals = () => {
       id: 2,
       retailerName: "City Grocers",
       retailerType: "Bulk Buyer",
-      productImage:
-        "https://images.unsplash.com/photo-1587049633312-d628ae50a8ae?auto=format&fit=crop&q=80&w=2070",
+      productImage:"https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=2070"
+      ,
       productName: "Potatoes",
       rating: 4.6,
       pricePerKg: 30,
@@ -118,16 +118,16 @@ const RetailerSbestDeals = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.3, duration: 1 }}
-              className="bg-white border border-gray-300 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              className="bg-white border max-h-64 border-gray-300 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
             >
             
               <div className="flex flex-col md:flex-row">
                 {/* Image Section */}
-                <div className="w-full md:w-1/3 bg-green-100 md:p-4  flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100">
+                <div className="w-full md:w-1/3 bg-green-100 md:p-4  flex flex-col items-center  justify-center border-b md:border-b-0 md:border-r border-gray-100">
                   <img
                     src={deal.productImage}
                     alt={deal.productName}
-                    className="w    object-contain rounded-s md:rounded-lg"
+                    className="object-cover max-h-48  rounded-s md:rounded-lg"
                   />
                   <h3 className="text-xl hidden md:block sm:text-2xl font-bold text-gray-900 text-center mt-2">
                     {deal.productName}

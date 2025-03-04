@@ -74,7 +74,7 @@ export default function App() {
             <Route path="/retailerpost" element={<RetailerDemandForm />} />
             <Route path="/retailerDashboard" element={<RetailerDashboard />} />
             <Route path="/retailerinsight" element={<Retailerinsight />} />
-            <Route path="/retailerBestDeal" element={RetailerSbestDeals}/>
+            <Route path="/retailerBestDeal" element={<RetailerSbestDeals/>}/>
           
             {/* Transport Routing */}
            
@@ -104,7 +104,9 @@ export default function App() {
               path="/transportervehicleform"
               element={<TransporterVehicleForm />}
             />
-          
+            
+            
+
             <Route path="/dummy" element={<Dummy />} />
             <Route path="/dummy/myStock" element={<MyStock />} />
             <Route path="/dummy/confRequset" element={<ConfRequest />} />

@@ -1,29 +1,47 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Bell, ShoppingBag } from "lucide-react";
-import { useSelector, useDispatch } from "react-redux";
-import { viewMyOrdersThunk, retailerNotificationThunk, viewSupplierThunk } from "../store/retailerSlice";
+import { ShoppingBag } from "lucide-react";
 
 export default function RetailerDashboard() {
   const [activeTab, setActiveTab] = useState("requests");
   const [selectedSupplier, setSelectedSupplier] = useState(null);
-  const dispatch = useDispatch();
 
-  // Redux store data
-  const { myretailerData, viewsupplier, loading } = useSelector((state) => state.retailer);
+  // Dummy order data
+  const dummyOrders = [
+    {
+      _id: "1",
+      crop: "Wheat",
+      quantity: 50,
+      pricePerQuintal: 1200,
+      expectedDeliveryDate: "2025-03-10",
+      locked: true,
+    },
+    {
+      _id: "2",
+      crop: "Rice",
+      quantity: 30,
+      pricePerQuintal: 1500,
+      expectedDeliveryDate: "2025-03-15",
+      locked: false,
+    },
+    {
+      _id: "3",
+      crop: "Maize",
+      quantity: 40,
+      pricePerQuintal: 1300,
+      expectedDeliveryDate: "2025-03-20",
+      locked: true,
+    },
+  ];
 
-  useEffect(() => {
-    dispatch(viewMyOrdersThunk());
-  }, [dispatch]);
-
-  const handleOnclickviewSupply = async (id) => {
-    try {
-      const result = await dispatch(viewSupplierThunk(id)).unwrap();
-      console.log("Supplier fetched:", result);
-      setSelectedSupplier(result); // Set the supplier data once it's available
-    } catch (error) {
-      console.error("Error fetching supplier:", error);
-    }
+  const handleOnclickviewSupply = (id) => {
+    setSelectedSupplier({
+      firstName: "Kalpesh",
+      lastName: "Shirshat",
+      contactNumber: "123-456-7890",
+      averageRating: 4.5,
+      reliabilityScore: 90,
+    });
   };
 
   return (
@@ -52,24 +70,22 @@ export default function RetailerDashboard() {
             <h2 className="text-lg font-semibold text-yellow-700">Order Requests</h2>
           </div>
           <div className="p-4 space-y-4">
-            {loading ? (
-              <p>Loading orders...</p>
-            ) : myretailerData?.myOrders?.length ? (
-              myretailerData.myOrders.map((order) => (
-                <div key={order._id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+            {dummyOrders.length ? (
+              dummyOrders.map((order) => (
+                <div key={order._id} className="border rounded-lg p-4 hover:shadow-lg transition-shadow bg-green-50 border-green-300">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-semibold">{order.crop}</h3>
-                    <span className={`text-sm ${order.locked ? "text-green-600" : "text-yellow-600"}`}>
+                    <h3 className="font-semibold text-green-800">{order.crop}</h3>
+                    <span className={`text-sm font-semibold ${order.locked ? "text-green-600" : "text-yellow-600"}`}>
                       {order.locked ? "Accepted" : "Pending"}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600">Quantity: {order.quantity} Quintals</p>
-                  <p className="text-sm text-gray-600">Price: {order.pricePerQuintal} per Quintal</p>
-                  <p className="text-sm text-gray-600">Date: {new Date(order.expectedDeliveryDate).toLocaleDateString()}</p>
+                  <p className="text-sm text-gray-700">Quantity: <span className="font-medium">{order.quantity} Quintals</span></p>
+                  <p className="text-sm text-gray-700">Price: <span className="font-medium">₹{order.pricePerQuintal} per Quintal</span></p>
+                  <p className="text-sm text-gray-700">Date: <span className="font-medium">{new Date(order.expectedDeliveryDate).toLocaleDateString()}</span></p>
                   {order.locked && (
                     <button
                       onClick={() => handleOnclickviewSupply(order._id)}
-                      className="mt-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                      className="mt-3 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all"
                     >
                       View Supplier Details
                     </button>
@@ -89,23 +105,13 @@ export default function RetailerDashboard() {
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white rounded-lg p-6 max-w-md w-full">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-xl font-semibold">Supplier Details</h3>
-              <button onClick={() => setSelectedSupplier(null)} className="text-gray-500 hover:text-gray-700">
-                ×
-              </button>
+              <button onClick={() => setSelectedSupplier(null)} className="text-gray-500 hover:text-gray-700">×</button>
             </div>
             <div className="space-y-3">
-              <p>
-                <span className="font-semibold">Name:</span> {selectedSupplier.firstName} {selectedSupplier.lastName}
-              </p>
-              <p>
-                <span className="font-semibold">Contact:</span> {selectedSupplier.contactNumber}
-              </p>
-              <p>
-                <span className="font-semibold">Rating:</span> {selectedSupplier.averageRating}
-              </p>
-              <p>
-                <span className="font-semibold">Reliability Score:</span> {selectedSupplier.reliabilityScore}
-              </p>
+              <p><span className="font-semibold">Name:</span> {selectedSupplier.firstName} {selectedSupplier.lastName}</p>
+              <p><span className="font-semibold">Contact:</span> {selectedSupplier.contactNumber}</p>
+              <p><span className="font-semibold">Rating:</span> {selectedSupplier.averageRating}</p>
+              <p><span className="font-semibold">Reliability Score:</span> {selectedSupplier.reliabilityScore}</p>
             </div>
           </motion.div>
         </div>
